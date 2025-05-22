@@ -44,4 +44,8 @@ jobs:
             MESSAGE="❌ Playwright Tests Failed in $GITHUB_REPOSITORY on $GITHUB_REF"
           fi
 
-          curl -X POST $CLIQ_WEBHOOK_URL \
+          curl -X POST "$CLIQ_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{\"text\": \"$MESSAGE\"}"
+        env:
+          CLIQ_WEBHOOK_URL: ${{ secrets.CLIQ_WEBHOOK_URL }}
