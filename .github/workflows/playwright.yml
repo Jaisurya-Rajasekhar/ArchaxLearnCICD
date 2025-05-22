@@ -1,4 +1,4 @@
-name: Playwright Tests and Report Deploy
+name: Playwright Tests
 
 on:
   push:
@@ -25,15 +25,12 @@ jobs:
       - name: 🎭 Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: 🧪 Run Playwright tests and generate HTML report
-        run: |
-          npx playwright test --reporter=html
-          mv playwright-report report
+      - name: 🧪 Run Playwright tests and generate report
+        run: npx playwright test --reporter=html
 
-      - name: 📂 Deploy report to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
+      - name: 📤 Upload Playwright HTML report (SHA reference)
+        if: always()
+        uses: actions/upload-artifact@8f91badf60a9e65c59ee6c45c9428fc7806f7f85  # commit SHA of v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./report
-          publish_branch: gh-pages
+          name: playwright-report
+          path: playwright-report
