@@ -35,7 +35,7 @@ jobs:
           name: playwright-report
           path: playwright-report
 
-        - name: Send result to Zoho Cliq
+      - name: Send result to Zoho Cliq
           if: always()
           run: |
             if [ "${{ job.status }}" == "success" ]; then
