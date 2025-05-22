@@ -25,15 +25,11 @@ jobs:
       - name: 🎭 Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: 🧪 Run Playwright tests and generate report
+      - name: 🧪 Run Playwright tests and generate HTML report
         run: npx playwright test --reporter=html
 
-      - name: 📤 Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
+      - name: 🖨️ List report folder contents (debug)
+        run: ls -R playwright-report
 
       - name: 📦 Publish Playwright report to GitHub Pages
         if: always()
@@ -45,14 +41,13 @@ jobs:
       - name: 📣 Send result to Zoho Cliq
         if: always()
         run: |
-          PAGES_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
           if [ "${{ job.status }}" == "success" ]; then
-            MESSAGE="✅ Playwright Tests Passed in $GITHUB_REPOSITORY on $GITHUB_REF. Report: $PAGES_URL"
+            MESSAGE="✅ Playwright Tests Passed\nView report: https://Jaisurya-Rajasekhar.github.io/ArchaxLearnCICD/"
           else
-            MESSAGE="❌ Playwright Tests Failed in $GITHUB_REPOSITORY on $GITHUB_REF. Report: $PAGES_URL"
+            MESSAGE="❌ Playwright Tests Failed\nView report: https://Jaisurya-Rajasekhar.github.io/ArchaxLearnCICD/"
           fi
 
-          curl -X POST "$CLIQ_WEBHOOK_URL" \
+          curl -X POST $CLIQ_WEBHOOK_URL \
             -H 'Content-Type: application/json' \
             -d "{\"text\": \"$MESSAGE\"}"
         env:
