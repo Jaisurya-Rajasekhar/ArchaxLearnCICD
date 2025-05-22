@@ -25,12 +25,12 @@ jobs:
       - name: 🎭 Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: 🧪 Run Playwright tests
-        run: npx playwright test
+      - name: 🧪 Run Playwright tests and generate report
+        run: npx playwright test --reporter=html
 
       - name: 📤 Upload Playwright HTML report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@f941fef7d6d2a6d1c0e8bdf03e62e1e7bb77b677
         with:
           name: playwright-html-report
           path: playwright-report
