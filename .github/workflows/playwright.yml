@@ -30,7 +30,7 @@ jobs:
 
       - name: 📤 Upload Playwright HTML report
         if: always()
-        uses: actions/upload-artifact@f941fef7d6d2a6d1c0e8bdf03e62e1e7bb77b677
+        uses: actions/upload-artifact@v2
         with:
           name: playwright-html-report
           path: playwright-report
