@@ -35,13 +35,21 @@ jobs:
           name: playwright-report
           path: playwright-report
 
+      - name: 📦 Publish Playwright report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./playwright-report
+
       - name: 📣 Send result to Zoho Cliq
         if: always()
         run: |
+          PAGES_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
           if [ "${{ job.status }}" == "success" ]; then
-            MESSAGE="✅ Playwright Tests Passed in $GITHUB_REPOSITORY on $GITHUB_REF"
+            MESSAGE="✅ Playwright Tests Passed in $GITHUB_REPOSITORY on $GITHUB_REF. Report: $PAGES_URL"
           else
-            MESSAGE="❌ Playwright Tests Failed in $GITHUB_REPOSITORY on $GITHUB_REF"
+            MESSAGE="❌ Playwright Tests Failed in $GITHUB_REPOSITORY on $GITHUB_REF. Report: $PAGES_URL"
           fi
 
           curl -X POST "$CLIQ_WEBHOOK_URL" \
